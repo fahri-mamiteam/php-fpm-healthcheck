@@ -27,7 +27,8 @@
 # Available options:
 # -v|--verbose
 # 
-# Metric options, fails in case the CURRENT VALUE is bigger than the GIVEN VALUE
+# Metric options, 
+# fails in case the CURRENT VALUE is bigger than the GIVEN VALUE
 # --accepted-conn=n
 # --listen-queue=n
 # --max-listen-queue=n
@@ -37,7 +38,8 @@
 # --max-active-processes=n
 # --max-children-reached=n
 # --slow-requests=n
-#
+# fails in case the avg of CURRENT VALUES is bigger than the GIVEN VALUE
+# --request-duration=n
 
 set -eu
 
