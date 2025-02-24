@@ -24,7 +24,7 @@ def test_valid_with_non_integer_value_exits_properly(host):
 def test_all_available_options_at_once(host):
     cmd = host.run("php-fpm-healthcheck --accepted-conn=1000 --listen-queue=1000 --max-listen-queue=1000 "
                    "--listen-queue-len=1000 --idle-processes=1000 --active-processes=1000 --total-processes=1000 "
-                   "--max-active-processes=1000 --max-children-reached=1000 --slow-requests=1000")
+                   "--max-active-processes=1000 --max-children-reached=1000 --slow-requests=1000 --request-duration=3600")
     assert cmd.rc == 0    
 
 @pytest.mark.php_fpm
@@ -38,6 +38,7 @@ def test_all_available_options_at_once(host):
     "--max-active-processes",
     "--max-children-reached",
     "--slow-requests",
+    "--request-duration",
 ])
 def test_all_available_options(host, option):
     cmd = host.run("php-fpm-healthcheck --verbose {0}=1000".format(option))
