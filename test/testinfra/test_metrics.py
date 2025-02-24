@@ -1,4 +1,5 @@
 import pytest
+import re
 
 @pytest.mark.php_fpm
 def test_metric_fail_accepted_conn(host):
@@ -30,3 +31,15 @@ def test_listen_queue_len_and_listen_queue_vars_are_parsed_correctly(host):
     assert "Trying to connect to php-fpm via:" in cmd.stdout
     assert "'listen queue' value '0' and expected is less than '5" in cmd.stdout
     assert "'max listen queue' value '0' and expected is less than '1024'" in cmd.stdout
+
+@pytest.mark.php_fpm
+def test_metric_request_duration(host):
+    cmd = host.run("FCGI_QUERY_STRING=full php-fpm-healthcheck --verbose --request-duration=3600")
+    assert cmd.rc == 0
+    assert "Trying to connect to php-fpm via:" in cmd.stdout
+    match = re.search(r"'request duration' value '(\d+)'", cmd.stdout)
+    if match:
+        request_duration = int(match.group(1))
+        assert request_duration < 3600, f"'request duration' value '{request_duration}' is not less than '3600'"
+    else:
+        assert False, "'request duration' value not found in cmd.stdout"
